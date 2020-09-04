@@ -68,7 +68,7 @@ let globalColor = "lightblue";
         } else if (color === 2) {
             event.target.style.backgroundColor = "lightgreen";
         } else {
-            event.target.style.backgroundColor = globalColor;
+            globalColor && (event.target.style.backgroundColor = globalColor);
         }
     });
 
@@ -80,7 +80,7 @@ let globalColor = "lightblue";
         } else if (color === 2) {
             event.target.style.backgroundColor = "lightgrey";
         } else {
-            event.target.style.backgroundColor = globalColor;
+            globalColor && (event.target.style.backgroundColor = globalColor);
         }
     });
 
