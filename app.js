@@ -1,7 +1,21 @@
-(function() {
+let globalColor = "lightblue";
+
+(function () {
+    function dispatchColorEvent(color) {
+        // create custom event
+        const colorEvent = new CustomEvent("change-color", {
+            detail: { color: color }
+        });
+
+        // find all elements and dispatch the new color event
+        document
+            .querySelectorAll("*")
+            .forEach((element) => element.dispatchEvent(colorEvent));
+    }
+
     // get a handle on body
     const body = document.querySelector("body");
- 
+
     // create a header
     const header = document.createElement("h2");
     header.innerText = "Modul 2 - koda fritt";
@@ -16,34 +30,45 @@
     p2.innerText = "Det här är paragraf 2";
     body.appendChild(p2);
 
-    // create two buttons
+    // create buttons
     const button1 = document.createElement("button");
     button1.innerText = "Ändra färger 1";
     button1.addEventListener("click", (event) => {
-        const colorEvent = new CustomEvent("change-color", {detail: {color: 1}});
         console.log(1);
-        p1.dispatchEvent(colorEvent);
-        p2.dispatchEvent(colorEvent);
+        dispatchColorEvent(1);
     });
     body.appendChild(button1);
 
     const button2 = document.createElement("button");
     button2.innerText = "Ändra färger 2";
     button2.addEventListener("click", (event) => {
-        const colorEvent = new CustomEvent("change-color", {detail: {color: 2}});
         console.log(2);
-        document.querySelectorAll("p").forEach((p) => p.dispatchEvent(colorEvent));
+        dispatchColorEvent(2);
     });
     body.appendChild(button2);
+
+    // create color input
+    const colorInput = document.createElement("input");
+    colorInput.placeholder = "Skriv in en HTML-färg";
+    colorInput.addEventListener("keyup", (event) => {
+        if (event.keyCode === 13) {
+            globalColor = event.target.value;
+            event.target.value = "";
+            console.log("New color: " + globalColor);
+            dispatchColorEvent();
+        }
+    });
+    body.appendChild(colorInput);
 
     p1.addEventListener("change-color", (event) => {
         const color = event.detail.color;
         //console.log(event.detail);
         if (color === 1) {
             event.target.style.backgroundColor = "pink";
-        }
-        if (color === 2) {
+        } else if (color === 2) {
             event.target.style.backgroundColor = "lightgreen";
+        } else {
+            event.target.style.backgroundColor = globalColor;
         }
     });
 
@@ -52,11 +77,13 @@
         //console.log(event.detail);
         if (color === 1) {
             event.target.style.backgroundColor = "violet";
-        }
-        if (color === 2) {
+        } else if (color === 2) {
             event.target.style.backgroundColor = "lightgrey";
+        } else {
+            event.target.style.backgroundColor = globalColor;
         }
     });
 
-    
+    console.log("First dispatch");
+    dispatchColorEvent(globalColor);
 })();
